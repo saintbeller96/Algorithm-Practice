@@ -24,7 +24,12 @@ public class Solution {
         
         answer[0] = 7-(cnt+zeros);
         answer[1] = 7-(cnt);
-        if(cnt == 0) answer[1]--;
+        if(cnt == 0) {
+        	answer[1]=6;
+        	if(zeros == 0) {
+        		answer[0] = 6;
+        	}
+        }
         return answer;
     }
 	
