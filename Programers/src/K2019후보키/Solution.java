@@ -29,7 +29,6 @@ public class Solution {
 			}
 			int candi = Integer.parseInt(sb.toString(), 2);
 			boolean flag = canCandidateKey(candiKey.toArray(new Integer[0]), relation);
-			//�ĺ�Ű�� �� �� �ִٸ� ����� üŷ
 			if(flag) {
 				boolean check = true;
 				for(int c : keySet.toArray(new Integer[0])) {
