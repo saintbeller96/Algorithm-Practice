@@ -38,15 +38,6 @@ public class Solution {
 			if((r1 == N-1 && c1==N-1)||(r2 == N-1 && c2==N-1)) {
 				return robot.time;
 			}
-			int[][] map = new int[N][N];
-			map[r1][c1] = 1;
-			map[r2][c2] = 2;
-			for(int i = 0; i<N; i++) {
-				for(int j = 0; j<N; j++) {
-					System.out.print(map[i][j]);
-				}
-				System.out.println();
-			}
 			System.out.println();
 			for(int d = 0; d<4; d++) {
 				int nr1 = r1 + dr[d];
