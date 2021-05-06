@@ -1,75 +1,76 @@
 package K2020동굴탐험;
 
+import java.util.*;
 public class Solution {
-	static class Node{
-		int n, p, c;
-		public Node() {}
-		public Node(int n, int p, int c) {
-			this.n = n;
-			this.p = p;
-			this.c = c;
+	List<Integer>[] biAdjList;
+	List<Integer>[] adjList;
+	int[] indegree;
+	public boolean solution(int n, int[][] path, int[][] order) {
+        biAdjList = new List[n];
+        adjList = new List[n];
+        indegree = new int[n];
+        for(int i = 0; i<n; i++) {
+        	biAdjList[i] = new ArrayList<>();
+        	adjList[i] = new ArrayList<>();
+        }
+        for(int[] p : path) {
+        	int u = p[0];
+        	int v = p[1];
+        	biAdjList[u].add(v);
+        	biAdjList[v].add(u);
+        }
+        
+        Queue<Integer> que = new ArrayDeque<>();
+        boolean[] visited = new boolean[n];
+        visited[0] = true;
+        que.offer(0);
+        while(!que.isEmpty()) {
+        	int u = que.poll();
+        	for(int v : biAdjList[u]) {
+        		if(!visited[v]) {
+        			visited[v] = true;
+        			que.offer(v);
+        			adjList[u].add(v);
+        			indegree[v]++;
+        		}	
+        	}
+        }
+        
+        for(int[] o : order) {
+        	int f = o[0];
+        	int t = o[1];
+        	adjList[f].add(t);
+        	indegree[t]++;
+        }
+
+        return !hasCycle(n);
+    }
+	
+	private boolean hasCycle(int n) {
+		Queue<Integer> que = new ArrayDeque<>();
+		for(int i = 0; i<n; i++) {
+			if(indegree[i] == 0) que.offer(i);
+		}
+		int cnt = 0;
+		while(!que.isEmpty()) {
+			int u = que.poll();
+			cnt++;
+			for(int v : adjList[u]) {
+				indegree[v]--;
+				if(indegree[v] == 0) {
+					que.offer(v);
+				}
+			}
 		}
 		
+		return cnt != n;
 	}
-	public boolean solution(int n, int[][] path, int[][] order) {
-        boolean answer = true;
-        Node[] tree = new Node[n];
-        for(int i = 0; i<n-1; i++) {
-        	int p = path[i][0];
-        	int c = path[i][1];
-        	if(tree[p] == null) {
-        		tree[p] = new Node(p, c, -1);
-        	}else {
-        		tree[p].c = c;
-        	}
-        	if(tree[c] == null) {
-        		tree[c] = new Node(c, p, -1);
-        	}else {
-        		tree[c].c = p;
-        	}
-        }
-        for(int i = 1; i<n-1; i++) {
-        	if(tree[i].c == -1) {
-        		int p = tree[i].p;
-        		while(p != 0) {
-        			if(tree[p].c != p) {
-        				p = tree[p].c;
-        			}else if(tree[p].p != p) {
-        				p = tree[p].p;
-        			}
-        		}
-        	}
-        }
-        
-        for(int i = 0; i<n; i++) {
-        	System.out.println("Node " + i + " (" +tree[i].p + "->"+tree[i].c+")");
-        }
-        
-//        for(int i = 0; i<order.length; i++) {
-//        	int s = order[i][0];
-//        	int d = order[i][1];
-//        	tree[d].p = s;
-//        }
-//        for(int i = 1; i < n; i++) {
-//        	int cur = tree[i].p;
-//        	while(cur != 0) {
-//        		if(cur == i) return false;
-//        		cur = tree[cur].p;
-//        	}
-//        	
-//        }
-        return answer;
-    }
+
 	public static void main(String[] args) {
 		int n = 9;
-		int[][] path = {
-				{0,1},{0,3},{0,7},{8,1},{3,6},{1,2},{4,7},{7,5}
-				
-		};
+		int[][] path = {{0,1},{0,3},{0,7},{8,1},{3,6},{1,2},{4,7},{7,5}};
 		int[][] order = {{8,5},{6,7},{4,1}};
 		Solution s = new Solution();
 		System.out.println(s.solution(n, path, order));
-
 	}
-
 }
