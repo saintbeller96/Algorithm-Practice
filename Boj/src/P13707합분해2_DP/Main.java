@@ -9,12 +9,14 @@ public class Main {
 		StringTokenizer stk = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(stk.nextToken());
 		int K = Integer.parseInt(stk.nextToken());
-		int n = N + K;
-		int MOD = 1000000000;
-		int[] dp = new int[n];
-
-
-
+		long MOD = 1000000000;
+		long[][] dp = new long[N+1][K+1];
+		for (int n = 1; n <=N ; n++) {
+			for (int k = 1; k <=K ; k++) {
+				if(n == 1) dp[n][k] = k;
+				else dp[n][k] = (dp[n][k-1] + dp[n-1][k])%MOD;
+			}
+		}
+		System.out.println(dp[N][K]);
 	}
-
 }
